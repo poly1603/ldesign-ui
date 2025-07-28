@@ -1,0 +1,40 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "composite": true,
+    "incremental": true,
+    "tsBuildInfoFile": "./dist/.tsbuildinfo",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@ldesign/engine": ["../engine/src"],
+      "@ldesign/color": ["../color/src"],
+      "@ldesign/utils": ["../utils/src"]
+    }
+  },
+  "include": [
+    "src/**/*",
+    "examples/**/*",
+    "__tests__/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "coverage"
+  ],
+  "references": [
+    {
+      "path": "../engine"
+    },
+    {
+      "path": "../color"
+    },
+    {
+      "path": "../utils"
+    }
+  ]
+}
