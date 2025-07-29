@@ -2,7 +2,7 @@
  * 断点响应式组合函数
  */
 
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import type { BreakpointConfig } from '../types'
 import { useBreakpoints } from '../config/ConfigProvider'
 
@@ -31,23 +31,28 @@ export interface BreakpointState {
  */
 export function useBreakpoint() {
   const breakpoints = useBreakpoints()
-  
+
   // 响应式状态
   const width = ref(0)
   const height = ref(0)
-  
+
   // 计算当前断点
   const current = computed<CurrentBreakpoint>(() => {
     const w = width.value
-    
-    if (w >= (breakpoints.xxl || 1600)) return 'xxl'
-    if (w >= (breakpoints.xl || 1200)) return 'xl'
-    if (w >= (breakpoints.lg || 992)) return 'lg'
-    if (w >= (breakpoints.md || 768)) return 'md'
-    if (w >= (breakpoints.sm || 576)) return 'sm'
+
+    if (w >= (breakpoints.xxl || 1600))
+return 'xxl'
+    if (w >= (breakpoints.xl || 1200))
+return 'xl'
+    if (w >= (breakpoints.lg || 992))
+return 'lg'
+    if (w >= (breakpoints.md || 768))
+return 'md'
+    if (w >= (breakpoints.sm || 576))
+return 'sm'
     return 'xs'
   })
-  
+
   // 各断点状态
   const xs = computed(() => width.value >= (breakpoints.xs || 480))
   const sm = computed(() => width.value >= (breakpoints.sm || 576))
@@ -55,7 +60,7 @@ export function useBreakpoint() {
   const lg = computed(() => width.value >= (breakpoints.lg || 992))
   const xl = computed(() => width.value >= (breakpoints.xl || 1200))
   const xxl = computed(() => width.value >= (breakpoints.xxl || 1600))
-  
+
   // 断点状态对象
   const state = computed<BreakpointState>(() => ({
     current: current.value,
@@ -66,9 +71,9 @@ export function useBreakpoint() {
     xl: xl.value,
     xxl: xxl.value,
     width: width.value,
-    height: height.value
+    height: height.value,
   }))
-  
+
   // 更新尺寸
   const updateSize = () => {
     if (typeof window !== 'undefined') {
@@ -76,19 +81,19 @@ export function useBreakpoint() {
       height.value = window.innerHeight
     }
   }
-  
+
   // 生命周期
   onMounted(() => {
     updateSize()
     window.addEventListener('resize', updateSize)
   })
-  
+
   onUnmounted(() => {
     if (typeof window !== 'undefined') {
       window.removeEventListener('resize', updateSize)
     }
   })
-  
+
   return {
     current,
     xs,
@@ -99,7 +104,7 @@ export function useBreakpoint() {
     xxl,
     width,
     height,
-    state
+    state,
   }
 }
 
@@ -109,13 +114,13 @@ export function useBreakpoint() {
 export function useMediaQuery(query: string) {
   const matches = ref(false)
   let mediaQuery: MediaQueryList | null = null
-  
+
   const updateMatches = () => {
     if (mediaQuery) {
       matches.value = mediaQuery.matches
     }
   }
-  
+
   onMounted(() => {
     if (typeof window !== 'undefined') {
       mediaQuery = window.matchMedia(query)
@@ -123,13 +128,13 @@ export function useMediaQuery(query: string) {
       mediaQuery.addEventListener('change', updateMatches)
     }
   })
-  
+
   onUnmounted(() => {
     if (mediaQuery) {
       mediaQuery.removeEventListener('change', updateMatches)
     }
   })
-  
+
   return matches
 }
 
@@ -138,15 +143,15 @@ export function useMediaQuery(query: string) {
  */
 export function useResponsiveValue<T>(
   values: Partial<Record<CurrentBreakpoint, T>>,
-  defaultValue: T
+  defaultValue: T,
 ) {
   const { current } = useBreakpoint()
-  
+
   return computed(() => {
     // 按优先级查找值
     const breakpointOrder: CurrentBreakpoint[] = ['xxl', 'xl', 'lg', 'md', 'sm', 'xs']
     const currentIndex = breakpointOrder.indexOf(current.value)
-    
+
     // 从当前断点开始向下查找
     for (let i = currentIndex; i < breakpointOrder.length; i++) {
       const breakpoint = breakpointOrder[i]
@@ -154,7 +159,7 @@ export function useResponsiveValue<T>(
         return values[breakpoint] as T
       }
     }
-    
+
     return defaultValue
   })
 }
@@ -170,7 +175,7 @@ export const breakpointUtils = {
     const { current } = useBreakpoint()
     return computed(() => current.value === 'xs' || current.value === 'sm')
   },
-  
+
   /**
    * 检查是否为平板设备
    */
@@ -178,7 +183,7 @@ export const breakpointUtils = {
     const { current } = useBreakpoint()
     return computed(() => current.value === 'md')
   },
-  
+
   /**
    * 检查是否为桌面设备
    */
@@ -186,20 +191,20 @@ export const breakpointUtils = {
     const { current } = useBreakpoint()
     return computed(() => ['lg', 'xl', 'xxl'].includes(current.value))
   },
-  
+
   /**
    * 获取响应式列数
    */
   getResponsiveCols: (cols: Partial<Record<CurrentBreakpoint, number>>) => {
     return useResponsiveValue(cols, 1)
   },
-  
+
   /**
    * 获取响应式间距
    */
   getResponsiveSpacing: (spacing: Partial<Record<CurrentBreakpoint, string>>) => {
     return useResponsiveValue(spacing, '16px')
-  }
+  },
 }
 
 /**
@@ -208,7 +213,7 @@ export const breakpointUtils = {
 export function createMediaQuery(
   breakpoint: CurrentBreakpoint,
   type: 'min' | 'max' = 'min',
-  breakpoints?: BreakpointConfig
+  breakpoints?: BreakpointConfig,
 ) {
   const defaultBreakpoints: BreakpointConfig = {
     xs: 480,
@@ -216,16 +221,16 @@ export function createMediaQuery(
     md: 768,
     lg: 992,
     xl: 1200,
-    xxl: 1600
+    xxl: 1600,
   }
-  
+
   const bp = breakpoints || defaultBreakpoints
   const value = bp[breakpoint]
-  
+
   if (!value) {
     throw new Error(`Breakpoint ${breakpoint} not found`)
   }
-  
+
   return `(${type}-width: ${value}px)`
 }
 
@@ -241,7 +246,7 @@ export const mediaQueries = {
   darkMode: '(prefers-color-scheme: dark)',
   lightMode: '(prefers-color-scheme: light)',
   reducedMotion: '(prefers-reduced-motion: reduce)',
-  highContrast: '(prefers-contrast: high)'
+  highContrast: '(prefers-contrast: high)',
 }
 
 /**

@@ -281,7 +281,7 @@ export interface UploadConfig {
   maxCount?: number
   maxSize?: number
   beforeUpload?: (file: File) => boolean | Promise<boolean>
-  onChange?: (info: { file: UploadFile; fileList: UploadFile[] }) => void
+  onChange?: (info: { file: UploadFile, fileList: UploadFile[] }) => void
   onProgress?: (percent: number, file: UploadFile) => void
   onSuccess?: (response: any, file: UploadFile) => void
   onError?: (error: any, file: UploadFile) => void

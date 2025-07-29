@@ -1,7 +1,7 @@
+import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import dts from 'vite-plugin-dts'
-import { resolve } from 'path'
 
 export default defineConfig({
   plugins: [
@@ -11,15 +11,15 @@ export default defineConfig({
       cleanVueFileName: true,
       skipDiagnostics: false,
       logDiagnostics: true,
-      rollupTypes: true
-    })
+      rollupTypes: true,
+    }),
   ],
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'LDesignUI',
       formats: ['es', 'umd'],
-      fileName: (format) => `ldesign-ui.${format}.js`
+      fileName: format => `ldesign-ui.${format}.js`,
     },
     rollupOptions: {
       external: [
@@ -28,45 +28,45 @@ export default defineConfig({
         '@ldesign/color',
         '@floating-ui/vue',
         '@vueuse/core',
-        'lucide-vue-next'
+        'lucide-vue-next',
       ],
       output: {
         globals: {
-          vue: 'Vue',
+          'vue': 'Vue',
           '@ldesign/engine': 'LDesignEngine',
           '@ldesign/color': 'LDesignColor',
           '@floating-ui/vue': 'FloatingUIVue',
           '@vueuse/core': 'VueUse',
-          'lucide-vue-next': 'LucideVueNext'
-        }
-      }
+          'lucide-vue-next': 'LucideVueNext',
+        },
+      },
     },
     sourcemap: true,
     minify: 'terser',
     terserOptions: {
       compress: {
         drop_console: true,
-        drop_debugger: true
-      }
-    }
+        drop_debugger: true,
+      },
+    },
   },
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
       '@ldesign/engine': resolve(__dirname, '../engine/src'),
       '@ldesign/color': resolve(__dirname, '../color/src'),
-      '@ldesign/utils': resolve(__dirname, '../utils/src')
-    }
+      '@ldesign/utils': resolve(__dirname, '../utils/src'),
+    },
   },
   css: {
     preprocessorOptions: {
       less: {
-        javascriptEnabled: true
-      }
-    }
+        javascriptEnabled: true,
+      },
+    },
   },
   test: {
     environment: 'jsdom',
-    setupFiles: ['./test-setup.ts']
-  }
+    setupFiles: ['./test-setup.ts'],
+  },
 })

@@ -142,7 +142,7 @@ export type {
   NotificationOptions,
   TooltipOptions,
   BreakpointConfig,
-  ColorScheme
+  ColorScheme,
 } from './types'
 
 /**
@@ -157,18 +157,18 @@ export const presetThemes = {
       success: '#52c41a',
       warning: '#faad14',
       error: '#f5222d',
-      info: '#1890ff'
+      info: '#1890ff',
     },
     sizes: {
       small: '24px',
       medium: '32px',
-      large: '40px'
+      large: '40px',
     },
     borderRadius: {
       small: '2px',
       medium: '6px',
-      large: '8px'
-    }
+      large: '8px',
+    },
   },
 
   // 暗色主题
@@ -179,18 +179,18 @@ export const presetThemes = {
       success: '#49aa19',
       warning: '#d89614',
       error: '#d32029',
-      info: '#177ddc'
+      info: '#177ddc',
     },
     background: {
       primary: '#141414',
       secondary: '#1f1f1f',
-      tertiary: '#262626'
+      tertiary: '#262626',
     },
     text: {
       primary: '#ffffff',
       secondary: '#a6a6a6',
-      tertiary: '#737373'
-    }
+      tertiary: '#737373',
+    },
   },
 
   // 紧凑主题
@@ -199,14 +199,14 @@ export const presetThemes = {
     sizes: {
       small: '20px',
       medium: '28px',
-      large: '36px'
+      large: '36px',
     },
     spacing: {
       small: '4px',
       medium: '8px',
-      large: '12px'
-    }
-  }
+      large: '12px',
+    },
+  },
 }
 
 /**
@@ -221,7 +221,7 @@ export const presetConfigs = {
     theme: 'default',
     locale: 'zh-CN',
     rtl: false,
-    accessibility: true
+    accessibility: true,
   } as import('./types').UIConfig,
 
   /**
@@ -233,7 +233,7 @@ export const presetConfigs = {
     locale: 'zh-CN',
     rtl: false,
     accessibility: true,
-    dense: true
+    dense: true,
   } as import('./types').UIConfig,
 
   /**
@@ -245,8 +245,8 @@ export const presetConfigs = {
     locale: 'zh-CN',
     rtl: false,
     accessibility: true,
-    touchOptimized: true
-  } as import('./types').UIConfig
+    touchOptimized: true,
+  } as import('./types').UIConfig,
 }
 
 /**
@@ -273,7 +273,7 @@ export function install(app: any, options: import('./types').UIConfig = {}) {
   // 设置全局属性
   app.config.globalProperties.$ui = {
     config,
-    themes: presetThemes
+    themes: presetThemes,
   }
 }
 
@@ -281,5 +281,5 @@ export function install(app: any, options: import('./types').UIConfig = {}) {
 export default {
   install,
   presetThemes,
-  presetConfigs
+  presetConfigs,
 }
